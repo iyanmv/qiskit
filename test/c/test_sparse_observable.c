@@ -730,14 +730,19 @@ int test_apply_layout(void) {
 
     // reverse the first 4 bits to [3, 2, 1, 0] and swap qubits 4 and 5, to get the final
     // permutation [3, 2, 1, 0, 5, 4]
-    qk_circuit_gate(qc, QkGate_Swap, (uint32_t[2]){0, 1}, NULL);
-    qk_circuit_gate(qc, QkGate_Swap, (uint32_t[2]){2, 3}, NULL);
-    qk_circuit_gate(qc, QkGate_Swap, (uint32_t[2]){1, 2}, NULL);
-    qk_circuit_gate(qc, QkGate_Swap, (uint32_t[2]){0, 1}, NULL);
-    qk_circuit_gate(qc, QkGate_Swap, (uint32_t[2]){2, 3}, NULL);
-    qk_circuit_gate(qc, QkGate_Swap, (uint32_t[2]){1, 2}, NULL);
+    uint32_t sw01[2] = {0, 1};
+    uint32_t sw23[2] = {2, 3};
+    uint32_t sw12[2] = {1, 2};
+    uint32_t sw45[2] = {4, 5};
 
-    qk_circuit_gate(qc, QkGate_Swap, (uint32_t[2]){4, 5}, NULL);
+    qk_circuit_gate(qc, QkGate_Swap, sw01, NULL);
+    qk_circuit_gate(qc, QkGate_Swap, sw23, NULL);
+    qk_circuit_gate(qc, QkGate_Swap, sw12, NULL);
+    qk_circuit_gate(qc, QkGate_Swap, sw01, NULL);
+    qk_circuit_gate(qc, QkGate_Swap, sw23, NULL);
+    qk_circuit_gate(qc, QkGate_Swap, sw12, NULL);
+
+    qk_circuit_gate(qc, QkGate_Swap, sw45, NULL);
 
     // elide the permutations and obtain a layout which we can apply to the observable
     QkTranspileLayout *transpile_layout = qk_transpiler_pass_standalone_elide_permutations(qc);
